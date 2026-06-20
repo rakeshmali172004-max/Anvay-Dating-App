@@ -1,3 +1,4 @@
+import 'tailwindcss/tailwind.css'
 export const metadata = {
   title: 'Anvay Dating App',
   description: 'Find your perfect connection',
