@@ -1,4 +1,4 @@
-import './globals.css'
+import '@/app/globals.css'
 export const metadata = {
   title: 'Anvay Dating App',
   description: 'Find your perfect connection',
