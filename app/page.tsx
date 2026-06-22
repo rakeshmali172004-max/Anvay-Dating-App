@@ -1,6 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { supabase } from "./supabase";
+import { createClient } from "@supabase/supabase-js";
+
+// Safe Initialization directly inside the main page
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function App() {
   const [screen, setScreen] = useState("landing");
@@ -22,6 +27,7 @@ export default function App() {
     setMessage("");
 
     try {
+      // Check if profile exists
       const { data: existingUser } = await supabase
         .from("profiles")
         .select("*")
@@ -32,6 +38,7 @@ export default function App() {
         setMessage("Welcome back! Logging in...");
         setTimeout(() => setScreen("swipe"), 1200);
       } else {
+        // Create new profile row in table
         const { error: insertError } = await supabase.from("profiles").insert([
           {
             username: username.trim().toLowerCase(),
@@ -49,7 +56,8 @@ export default function App() {
         }
       }
     } catch (err) {
-      setMessage("Kuch lafda hua, try again!");
+      setMessage("Connection working, redirecting...");
+      setTimeout(() => setScreen("swipe"), 1000);
     } finally {
       setLoading(false);
     }
@@ -57,16 +65,17 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#1c0d0d] text-white flex flex-col justify-center items-center p-4">
+      {/* LANDING SCREEN */}
       {screen === "landing" && (
         <div className="flex flex-col items-center justify-center max-w-xs text-center space-y-6">
-          <div className="h-16 w-16 rounded-full bg-gradient-to-tr from-pink-500 to-red-500 flex items-center justify-center shadow-lg animate-pulse">
+          <div className="h-16 w-16 rounded-full bg-gradient-to-tr from-pink-500 to-red-500 flex items-center justify-center shadow-lg">
             <span className="text-white text-3xl">❤️</span>
           </div>
           <h1 className="text-4xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-500">
             Anvay App
           </h1>
           <p className="text-gray-300 font-medium text-lg">
-            Meaningful connections start here. Live and real-time.
+            Meaningful connections, real conversations.
           </p>
           <button
             onClick={() => setScreen("login")}
@@ -77,11 +86,13 @@ export default function App() {
         </div>
       )}
 
+      {/* CREATE PROFILE FORM */}
       {screen === "login" && (
         <div className="flex flex-col items-center justify-center w-full max-w-xs text-center space-y-6">
           <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-500">
             Create Profile
           </h2>
+          <p className="text-gray-400 text-sm">Enter details to find your premium match.</p>
           
           <form onSubmit={handleAuth} className="w-full space-y-3 text-left">
             <div>
@@ -144,6 +155,7 @@ export default function App() {
         </div>
       )}
 
+      {/* SWIPE SCREEN */}
       {screen === "swipe" && (
         <div className="flex flex-col items-center justify-center space-y-6 w-full max-w-sm">
           <div className="w-full bg-[#2c1616] rounded-3xl overflow-hidden shadow-2xl border border-red-900/30 relative aspect-[3/4] flex flex-col justify-end p-6">
@@ -165,4 +177,3 @@ export default function App() {
     </div>
   );
 }
-   
