@@ -1,98 +1,62 @@
-"use client"
+"use client";
+import React, { useState } from "react";
 
-import React, { useState } from "react"
+export default function App() {
+  const [screen, setScreen] = useState("landing");
 
-export default function AnvayApp() {
-  // Screen state: 'landing', 'login', 'dashboard'
-  const [screen, setScreen] = useState<"landing" | "login" | "dashboard">("landing")
-  const [profiles, setProfiles] = useState([
-    { id: 1, name: "Aanya", age: 22, bio: "Music lover & coffee enthusiast ☕", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&q=80" },
-    { id: 2, name: "Rohan", age: 24, bio: "Fitness geek & avid traveler ✈️", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80" },
-    { id: 3, name: "Diya", age: 23, bio: "Let's grab some tacos and talk cinema 🎬", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&q=80" }
-  ])
-
-  const handleSwipe = () => {
-    if (profiles.length > 1) {
-      setProfiles(profiles.slice(1))
-    } else {
-      alert("No more profiles nearby! 🔥 Check back later.")
-    }
-  }
-
-  // SCREEN 1: LANDING PAGE
-  if (screen === "landing") {
-    return (
-      <div className="min-h-screen bg-[#1c0d0d] text-[#fff5f5] flex flex-col items-center justify-center p-6 text-center">
-        <div className="h-16 w-16 rounded-full bg-[#ff4a6b] flex items-center justify-center mb-4 shadow-lg shadow-[#ff4a6b]/20">
-          <span className="text-white text-3xl">♥</span>
-        </div>
-        <h1 className="text-4xl font-black tracking-tight mb-2 bg-gradient-to-r from-white to-[#ff4a6b] bg-clip-text text-transparent">Anvay</h1>
-        <p className="text-lg font-medium text-[#baa5a5] max-w-sm mb-8">Meaningful connections, made simple.</p>
-        <div className="w-full max-w-xs space-y-4">
-          <button onClick={() => setScreen("login")} className="w-full bg-[#ff4a6b] text-white font-bold py-3.5 px-4 rounded-xl active:scale-[0.98] transition-all shadow-lg">
+  return (
+    <div className="min-h-screen bg-[#1c0d0d] text-white flex flex-col justify-center items-center font-sans p-4 select-none">
+      {screen === "landing" && (
+        <div className="flex flex-col items-center justify-center max-w-xs text-center space-y-6 animate-fadeIn">
+          <div className="h-16 w-16 rounded-full bg-gradient-to-tr from-pink-500 to-red-500 flex items-center justify-center shadow-lg">
+            <span className="text-white text-3xl">❤️</span>
+          </div>
+          <h1 className="text-4xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-red-500">Anvay</h1>
+          <p className="text-gray-300 font-medium text-lg leading-relaxed">Meaningful connections, real conversations.</p>
+          <button 
+            onClick={() => setScreen("login")}
+            className="w-full bg-gradient-to-r from-pink-500 to-red-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:opacity-90 active:scale-95 transition-all transform duration-150"
+          >
             Get Started
           </button>
         </div>
-      </div>
-    )
-  }
+      )}
 
-  // SCREEN 2: LOGIN PAGE
-  if (screen === "login") {
-    return (
-      <div className="min-h-screen bg-[#1c0d0d] text-[#fff5f5] flex flex-col justify-between p-6">
-        <div className="flex items-center gap-2 pt-4">
-          <span className="text-2xl font-extrabold text-[#ff4a6b]">Anvay ♥</span>
-        </div>
-        <div className="max-w-sm mx-auto w-full space-y-6 text-center">
-          <h2 className="text-3xl font-black">Welcome back</h2>
-          <p className="text-sm text-[#baa5a5]">Sign in to start matching!</p>
-          <button onClick={() => setScreen("dashboard")} className="w-full flex items-center justify-center gap-3 bg-white text-[#1c0d0d] font-bold py-3.5 px-4 rounded-xl shadow-md">
-            Continue with Google
+      {screen === "login" && (
+        <div className="flex flex-col items-center justify-center max-w-xs text-center space-y-6 animate-fadeIn w-full">
+          <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-red-500">Welcome Back</h2>
+          <p className="text-gray-400 text-sm">Enter details to find your premium match.</p>
+          <div className="w-full space-y-3 text-left">
+            <input type="text" placeholder="Username / Email" className="w-full bg-[#2c1616] border border-pink-900/40 rounded-xl p-3 text-white placeholder-gray-500 focus:outline-none focus:border-pink-500" />
+            <input type="password" placeholder="Password" className="w-full bg-[#2c1616] border border-pink-900/40 rounded-xl p-3 text-white placeholder-gray-500 focus:outline-none focus:border-pink-500" />
+          </div>
+          <button 
+            onClick={() => setScreen("swipe")}
+            className="w-full bg-gradient-to-r from-pink-500 to-red-500 text-white font-bold py-3 rounded-full shadow-md hover:opacity-90 active:scale-95 transition"
+          >
+            Sign In
           </button>
-          <button onClick={() => setScreen("dashboard")} className="w-full bg-[#ff4a6b] text-white font-bold py-3.5 px-4 rounded-xl shadow-lg">
-            Use Phone Number
-          </button>
-          <p onClick={() => setScreen("landing")} className="text-xs text-[#7a6565] cursor-pointer underline">Go Back</p>
         </div>
-        <div className="text-center text-xs text-[#7a6565] pb-4">By continuing, you agree to our Terms.</div>
-      </div>
-    )
-  }
+      )}
 
-  // SCREEN 3: PROFILE SWIPING DASHBOARD
-  return (
-    <div className="min-h-screen bg-[#1c0d0d] text-[#fff5f5] flex flex-col justify-between p-4">
-      {/* Top Bar */}
-      <div className="flex justify-between items-center py-2 border-b border-[#3a2525]">
-        <span className="text-xl font-black text-[#ff4a6b]">Anvay ♥</span>
-        <button onClick={() => setScreen("landing")} className="text-xs bg-[#2a1717] px-3 py-1.5 rounded-lg border border-[#3a2525] text-[#baa5a5]">
-          Logout
-        </button>
-      </div>
-
-      {/* Swipe Deck */}
-      <div className="flex-1 flex items-center justify-center p-4">
-        {profiles.length > 0 ? (
-          <div className="bg-[#2a1717] w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl border border-[#3a2525] relative">
-            <img src={profiles[0].img} alt={profiles[0].name} className="w-full h-80 object-cover" />
-            <div className="p-5 space-y-2 bg-gradient-to-t from-[#1c0d0d] to-transparent">
-              <h3 className="text-2xl font-bold">{profiles[0].name}, <span className="text-xl font-normal text-[#baa5a5]">{profiles[0].age}</span></h3>
-              <p className="text-sm text-[#baa5a5]">{profiles[0].bio}</p>
+      {screen === "swipe" && (
+        <div className="flex flex-col items-center justify-center max-w-xs space-y-6 w-full animate-fadeIn">
+          <div className="w-full bg-[#2c1616] rounded-3xl overflow-hidden shadow-2xl border border-pink-900/30 relative aspect-[3/4] flex flex-col justify-end p-4">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#1c0d0d]/40 to-[#1c0d0d] z-10" />
+            <div className="h-full w-full bg-gradient-to-br from-pink-900/20 to-red-900/20 absolute inset-0 flex items-center justify-center">
+              <span className="text-6xl text-pink-600/30">✨</span>
             </div>
-            {/* Action Buttons */}
-            <div className="flex justify-center gap-6 pb-6 pt-2">
-              <button onClick={handleSwipe} className="w-14 h-14 rounded-full bg-[#1c0d0d] border border-[#3a2525] flex items-center justify-center text-xl text-gray-400 active:scale-95 transition-all">❌</button>
-              <button onClick={() => { alert("It's a Match! 🎉"); handleSwipe(); }} className="w-14 h-14 rounded-full bg-[#ff4a6b] flex items-center justify-center text-xl text-white active:scale-95 transition-all shadow-lg shadow-[#ff4a6b]/20">❤️</button>
+            <div className="relative z-20 text-left">
+              <h3 className="text-2xl font-bold">Aanya, <span className="font-normal text-xl text-gray-300">22</span></h3>
+              <p className="text-gray-400 text-sm mt-1">Music lover • Exploring new places</p>
             </div>
           </div>
-        ) : (
-          <div className="text-center space-y-2">
-            <p className="text-xl font-bold text-[#baa5a5]">No more profiles nearby 🌐</p>
-            <p className="text-xs text-[#7a6565]">Try changing your filters later.</p>
+          <div className="flex space-x-6 z-20">
+            <button onClick={() => alert("Skipped!")} className="h-14 w-14 bg-[#2c1616] border border-gray-800 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition text-gray-400 text-xl">✖</button>
+            <button onClick={() => alert("It's a Match! 🎉")} className="h-14 w-14 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition text-white text-xl">❤️</button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
-  )
-}    
+  );
+}
