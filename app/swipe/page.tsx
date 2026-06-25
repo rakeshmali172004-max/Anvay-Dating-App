@@ -22,7 +22,6 @@ export default function SwipePage() {
   }, []);
 
   const handleSwipe = async () => {
-    // Like logic add kiya hai
     if (profiles[currentIndex]) {
       const { error } = await supabase.from("likes").insert({
         liked_user_id: profiles[currentIndex].id,
@@ -44,7 +43,6 @@ export default function SwipePage() {
         {loading ? <p>Loading...</p> : currentIndex < profiles.length ? (
           <div style={{ backgroundColor: "#221a1a", padding: "20px", borderRadius: "20px" }}>
             
-            {/* Media Slider Section */}
             {profiles[currentIndex].media_urls && profiles[currentIndex].media_urls.length > 0 && (
               <img 
                 src={profiles[currentIndex].media_urls[0]} 
