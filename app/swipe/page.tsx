@@ -1,4 +1,4 @@
-"use client";
+1"use client";
 import React, { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 
@@ -44,7 +44,16 @@ export default function SwipePage() {
         ) : currentIndex < profiles.length ? (
           <div style={{ backgroundColor: "#221a1a", borderRadius: "20px", overflow: "hidden", boxShadow: "0 10px 20px rgba(0,0,0,0.3)", position: "relative", minHeight: "400px", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "20px", textAlign: "left", backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.8) 100%)" }}>
             <div style={{ position: "absolute", top: "20px", left: "20px", backgroundColor: "#ff2d55", padding: "5px 12px", borderRadius: "15px", fontSize: "0.8rem", fontWeight: "bold" }}>
-              {profiles[currentIndex].gender || "User"}
+             {profiles[currentIndex]?.media_urls && profiles[currentIndex].media_urls.length > 0 && (
+  <div style={{ marginBottom: "15px" }}>
+    <img 
+      src={profiles[currentIndex].media_urls[0]} 
+      alt="Profile" 
+      style={{ width: "100%", height: "250px", objectFit: "cover" }} 
+    />
+  </div>
+)}
+             {profiles[currentIndex].gender || "User"}
             </div>
             <h2 style={{ fontSize: "2rem", marginBottom: "5px" }}>{profiles[currentIndex].full_name || profiles[currentIndex].username}</h2>
             <p style={{ color: "#ccc", fontSize: "1rem", marginBottom: "20px" }}>{profiles[currentIndex].bio || "No bio added."}</p>
