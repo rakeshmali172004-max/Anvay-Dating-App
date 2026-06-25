@@ -21,7 +21,19 @@ export default function SwipePage() {
     fetchProfiles();
   }, []);
 
-  const handleSwipe = () => {
+  const handleSwipe = async () => {
+    // Like logic add kiya hai
+    if (profiles[currentIndex]) {
+      const { error } = await supabase.from("likes").insert({
+        liked_user_id: profiles[currentIndex].id,
+      });
+
+      if (error) {
+        console.error("Like save nahi ho paaya:", error);
+      } else {
+        alert("Match Liked!");
+      }
+    }
     setCurrentIndex((prev) => prev + 1);
   };
 
@@ -43,7 +55,13 @@ export default function SwipePage() {
 
             <h2>{profiles[currentIndex].full_name || "User"}</h2>
             <p>{profiles[currentIndex].bio}</p>
-            <button onClick={handleSwipe} style={{ padding: "10px 20px", backgroundColor: "#ff2d55", border: "none", borderRadius: "10px", color: "#fff", cursor: "pointer" }}>Swipe Right</button>
+            
+            <button 
+              onClick={handleSwipe} 
+              style={{ width: "100%", padding: "15px", backgroundColor: "#ff2d55", border: "none", borderRadius: "10px", color: "#fff", cursor: "pointer", fontWeight: "bold" }}
+            >
+              Swipe Right (Like)
+            </button>
           </div>
         ) : <p>Khatam Bhai! Sab swipe ho gaya.</p>}
       </div>
